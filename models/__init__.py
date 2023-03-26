@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 Main module for the HBNB project
+The __init__.py
 """
 
 import os
