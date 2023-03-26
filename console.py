@@ -36,19 +36,46 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, line):
         """Quit command exit the program"""
         return True
-
-    def do_create(self, line):
-        """Creates a new BaseModel instance, saves it to the JSON file and prints the id"""
-        if len(line) == 0:
+    def do_create(self, arg):
+        """Creates a new instance of a given class."""
+        if not arg:
             print("** class name missing **")
             return
-        try:
-            string = line + "()"
-            instance = eval(string)
-            print(instance.id)
-            instance.save()
-        except:
+    
+        arg_list = arg.split()
+        class_name = arg_list[0]
+        if class_name not in self.classes:
             print("** class doesn't exist **")
+            return
+    
+        # Create dictionary of attributes from command arguments
+        attr_dict = {}
+        for param in arg_list[1:]:
+            param_list = param.split("=")
+            if len(param_list) == 2:
+                key, value = param_list
+                if value.startswith('"') and value.endswith('"'):
+                    # Parse string values
+                    value = value[1:-1].replace('_', ' ').replace('\\"', '"')
+                elif '.' in value:
+                    # Parse float values
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+                else:
+                    # Parse integer values
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+                attr_dict[key] = value
+    
+        new_instance = self.classes[class_name](**attr_dict)
+        print(new_instance.id)
+        self.__session.add(new_instance)
+        self.__session.save()
+
     def help_quit(self):
         ''' help_quit '''
         print("Quit command to exit the program\n")
@@ -56,6 +83,7 @@ class HBNBCommand(cmd.Cmd):
     def help_EOF(self):
         """help_EOF"""
         print("End of File command: exit the program\n")
+
     def do_show(self, line):
         """Prints an instance as a string based on the class and id"""    
         className_line = line.split()
@@ -72,6 +100,7 @@ class HBNBCommand(cmd.Cmd):
                 print(models.storage.all()[instance])
             else:
                 print("** no instance found **")
+
     def do_destroy(self, line):
         """Deletes an instance based on the class and id"""
         className_line = line.split()
