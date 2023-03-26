@@ -1,12 +1,10 @@
 #!/usr/bin/python3
-''' Clase Review que hereda de BaseModel '''
-
+""" Review module for the HBNB project """
 from models.base_model import BaseModel
 
 
 class Review(BaseModel):
-    ''' Atributos de clase pública '''
-    # Reseñas realizadas por usuarios sobre un lugar
+    """ Review classto store review information """
     place_id = ""
     user_id = ""
     text = ""
