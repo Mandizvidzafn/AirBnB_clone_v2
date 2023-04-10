@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 """
-Main module for the HBNB project
-The __init__.py
+initialize the models package
 """
 
-import os
-from models import storage
-from models.engine.file_storage import FileStorage
-from models.engine.db_storage import DBStorage
+from os import getenv
 
-if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
+
+storage_t = getenv("HBNB_TYPE_STORAGE")
+
+if storage_t == "db":
+    from models.engine.db_storage import DBStorage
     storage = DBStorage()
 else:
+    from models.engine.file_storage import FileStorage
     storage = FileStorage()
-
 storage.reload()
