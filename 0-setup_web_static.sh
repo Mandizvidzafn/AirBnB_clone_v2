@@ -11,7 +11,7 @@ fi
 sudo mkdir -p /data/web_static/{releases/test,shared}
 
 # Create a fake HTML file for testing
-echo "Hello World!" | sudo tee /data/web_static/releases/test/index.html > /dev/null
+echo "Hello World Test!" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 
 # Create a symbolic link
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
