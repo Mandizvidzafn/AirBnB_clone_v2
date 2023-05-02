@@ -8,7 +8,11 @@ if ! [ -x "$(command -v nginx)" ]; then
 fi
 
 # Create the necessary directories
-sudo mkdir -p /data/web_static/{releases/test,shared}
+if sudo mkdir -p /data/web_static/{releases/test,shared}; then
+    echo "Directories created successfully"
+else
+    echo "Error: Failed to create directories"
+fi
 
 # Create a fake HTML file for testing
 echo "<html>
