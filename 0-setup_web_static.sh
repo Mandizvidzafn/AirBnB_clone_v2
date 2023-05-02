@@ -30,17 +30,17 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 
 # Update the Nginx configuration
-if ! grep -q '/hbnb_static/' /etc/nginx/sites-available/default; then
+if ! grep -q '/hbnb_static/' /etc/nginx/sites-available/hello; then
     sudo sed -i '/^\s*server\s*{/a \
         location /hbnb_static/ {\
             alias /data/web_static/current/;\
         }\
-    ' /etc/nginx/sites-available/default
+    ' /etc/nginx/sites-available/hello
 fi
 
 
 #Create a symbolic link fro default sites-available and enabled
-sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo ln -sf /etc/nginx/sites-available/hello /etc/nginx/sites-enabled/hello
 
 # Test Nginx
 sudo nginx -t
