@@ -4,10 +4,9 @@
 # using the function do_pack
 import os
 from fabric.api import run, put, env
-
-env.hosts = ['44.192.38.3', '3.239.82.120']
+env.hosts = ['100.25.104.222', '100.25.183.200']
 env.user = "ubuntu"
-
+env.key_filename = '~/.ssh/alx'
 
 def do_deploy(archive_path):
     """Create a tar gzipped archive of the directory web_static."""
@@ -17,7 +16,7 @@ def do_deploy(archive_path):
         try:
             put(archive_path, "/tmp/")
             """ putting the file to .tgz """
-            file_name = archive_path.split("/")[1]
+            file_name = archive_path.split("/")[-1]
             """ splitting .tgz """
             file_name2 = file_name.split(".")[0]
             """ spliting archivo """
