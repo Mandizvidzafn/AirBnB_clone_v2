@@ -15,7 +15,8 @@ import re
 
 
 env.hosts = ['3.236.9.233', '44.200.93.43']
-
+env.user = "ubuntu"
+env.key_filename = '~/.ssh/alx'
 
 def do_pack():
     """Function to compress files in an archive"""
@@ -81,17 +82,42 @@ def deploy():
 
 def do_clean(number=0):
     """Deletes out-of-date archives"""
+    try:
+        n = int(number)
+        if n < 1:
+            n = 1
+    except ValueError:
+        print("Error: number must be an integer")
+        return False
+    
     files = local("ls -1t versions", capture=True)
     file_names = files.split("\n")
-    n = int(number)
-    if n in (0, 1):
-        n = 1
+    if len(file_names) <= n:
+        print("Nothing to delete")
+        return False
+    print("The following files will be deleted:")
+    print("\n".join(file_names[n:]))
+    confirm = input("Are you sure you want to delete these files? (y/n) ")
+    if confirm.lower() != "y":
+        print("Aborted")
+        return False
     for i in file_names[n:]:
         local("rm versions/{}".format(i))
     dir_server = run("ls -1t /data/web_static/releases")
     dir_server_names = dir_server.split("\n")
+    if len(dir_server_names) <= n:
+        print("Nothing to delete")
+        return False
+    print("The following directories will be deleted:")
+    print("\n".join(dir_server_names[n:]))
+    confirm = input("Are you sure you want to delete these directories? (y/n) ")
+    if confirm.lower() != "y":
+        print("Aborted")
+        return False
     for i in dir_server_names[n:]:
-        if i is 'test':
+        if i == 'test':
             continue
-        run("rm -rf /data/web_static/releases/{}"
-            .format(i))
+        run("rm -rf /data/web_static/releases/{}".format(i))
+    print("Done")
+    return True
+
