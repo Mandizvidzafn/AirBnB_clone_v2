@@ -4,8 +4,9 @@ from ..models import storage
 from ..models.state import State
 from ..models.city import City
 from ..models.amenity import Amenity
-from flask import Flask, render_template
+from ..models.place import Place
 
+from flask import Flask, render_template
 app = Flask(__name__)
 
 
@@ -15,9 +16,9 @@ def close_db(error):
     storage.close()
 
 
-@app.route('/hbnb_filters', strict_slashes=False)
-def hbnb_filter():
-    """ filters """
+@app.route('/hbnb', strict_slashes=False)
+def hbnb():
+    """ renders the page """
     states = storage.all(State).values()
     states = sorted(states, key=lambda k: k.name)
     city_state = []
@@ -28,9 +29,12 @@ def hbnb_filter():
     amenities = storage.all(Amenity).values()
     amenities = sorted(amenities, key=lambda k: k.name)
 
-    return render_template('10-hbnb_filters.html', states=city_state, amenities=amenities)
+    places = storage.all(Place).values()
+    places = sorted(places, key=lambda k: k.name)
+
+    return render_template('100-hbnb.html', states=city_state, amenities=amenities, places=places)
 
 
 if __name__ == "__main__":
-    """ runs app """
+    """ Main Function """
     app.run(host='0.0.0.0', port=5000)

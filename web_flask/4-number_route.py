@@ -1,41 +1,39 @@
 #!/usr/bin/python3
+""" Starts a flask application """
 from flask import Flask
-
 app = Flask(__name__)
 
 
-@app.route("/", strict_slashes=False)
-def home():
-    """Returns Hello HBNB!"""
-    return "Hello HBNB!"
+@app.route('/', strict_slashes=False)
+def hello_hbnb():
+    """ returns  Hello hbnb  when / is called """
+    return 'Hello HBNB!'
 
 
-@app.route("/hbnb", strict_slashes=False)
+@app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """Should return HBNB when the route is called"""
-    return "HBNB"
+    """  returns hbnb  when /hbnb is called """
+    return 'HBNB'
 
 
-@app.route("/c/<text>", strict_slashes=False)
-def c(text):
-    """Replace _ with a space and returns the text"""
-    text = text.replace("_", " ")
-    return f"C {text}"
+@app.route('/c/<text>', strict_slashes=False)
+def c_is_fun(text):
+    """ replaces _ in text with space when route is called """
+    return "C " + text.replace('_', ' ')
 
 
-@app.route("/python", strict_slashes=False)
-@app.route("/python/<text>", strict_slashes=False)
-def python(text="is_cool"):
-    """Should return text if provided else returns is cool when the route is called"""
-    text = text.replace("_", " ")
-    return text
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python_is_cool(text='is_cool'):
+    """ replaces _ in text with space when route is called """
+    return "Python " + text.replace('_', ' ')
 
 
-@app.route("/number/<int:n>", strict_slashes=False)
-def n(n):
-    """Should return n is a number when the route is called"""
+@app.route('/number/<int:n>', strict_slashes=False)
+def is_n_number(n):
+    """ checks if n is int nts a Message when /number is called only if n is an int"""
     return f"{n} is a number"
 
-
 if __name__ == "__main__":
-    app.run(port=5000, host="0.0.0.0")
+    """ runs app """
+    app.run(host='0.0.0.0', port=5000)
